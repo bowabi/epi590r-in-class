@@ -57,4 +57,35 @@ tbl_summary(
 	modify_footnote(update = everything() ~ NA) |>
 	modify_header(label = "**Variable**", p.value = "**P**")
 
+#exersise 3-7
+#select varibles and label
+library(tidyverse)
+library(gtsummary)
+
+# ... (previous code)
+
+tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c(sex_cat, race_eth_cat, region_cat,
+							income, sleep_wkdy, sleep_wknd),
+	label = list(
+		race_eth_cat = "Race/ethnicity",
+		region_cat = "Region",
+		income = "Income",
+		sleep_wkdy = "Weekday Sleep",
+		sleep_wknd = "Weekend Sleep"
+	),
+	statistic = list(
+		income = "{p10} (10th percentile), {p90} (90th percentile)",
+		"starts_with('sleep')" = "min = {min}; max = {max}"
+	)
+) %>%
+	add_p(test = list(all_continuous() ~ "t.test",
+										all_categorical() ~ "chisq.test")) |>
+	modify_header(label = "**Variable**", p.value = "**P**")
+
+
+
+
 
